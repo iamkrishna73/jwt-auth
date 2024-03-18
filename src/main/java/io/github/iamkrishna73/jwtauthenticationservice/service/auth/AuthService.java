@@ -58,9 +58,9 @@ public class AuthService implements IAuthService{
 
     @Override
     public String verifyToken(String token) {
-        var usernameOptinal = JwtUtils.getUsernameFromToken(token);
-        if(usernameOptinal.isPresent()){
-           return usernameOptinal.get();
+        var usernameOptional = JwtUtils.getUsernameFromToken(token);
+        if(usernameOptional.isPresent()){
+           return usernameOptional.get();
         }
         throw new RuntimeException("Token Invalid");
     }
