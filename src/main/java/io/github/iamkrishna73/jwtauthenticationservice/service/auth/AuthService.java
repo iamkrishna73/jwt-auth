@@ -14,10 +14,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service
-public class AuthService implements IAuthService{
+public class AuthService implements IAuthService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final AppUserRepository appUserRepository;
+
     public AuthService(AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, AppUserRepository appUserRepository) {
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
@@ -30,24 +31,24 @@ public class AuthService implements IAuthService{
         var authToken = new UsernamePasswordAuthenticationToken(username, password);
         var authenticate = authenticationManager.authenticate(authToken);
         //Generate Token
-        return JwtUtils.generateToken(((UserDetails)(authenticate.getPrincipal())).getUsername());
+        return JwtUtils.generateToken(((UserDetails) (authenticate.getPrincipal())).getUsername());
     }
 
     @Override
     public String signup(String name, String username, String password) {
         // Check whether user already exists or not
         boolean isUserExist = appUserRepository.existsByUsername(username);
-        if(isUserExist) {
+        if (isUserExist) {
             throw new RuntimeException("User already exists");
         }
         // Encoder password
-        var encoder = passwordEncoder.encode(password);
+        var encoderPassword = passwordEncoder.encode(password);
         //Authorities
-        var authorties = new ArrayList<GrantedAuthority>();
-        authorties.add(new SimpleGrantedAuthority("ROLE_USER"));
+        var authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         //Create App User
-        var appUser = AppUser.builder().name(name).username(username).password(password).authorities(authorties).build();
+        var appUser = AppUser.builder().name(name).username(username).password(encoderPassword).authorities(authorities).build();
 
         //save user
         appUserRepository.save(appUser);
@@ -59,8 +60,8 @@ public class AuthService implements IAuthService{
     @Override
     public String verifyToken(String token) {
         var usernameOptional = JwtUtils.getUsernameFromToken(token);
-        if(usernameOptional.isPresent()){
-           return usernameOptional.get();
+        if (usernameOptional.isPresent()) {
+            return usernameOptional.get();
         }
         throw new RuntimeException("Token Invalid");
     }

@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.List;
 
-@Document(collation = "app-user")
+@Document(collection = "app-user")
 @Data
 @Builder
 @NoArgsConstructor

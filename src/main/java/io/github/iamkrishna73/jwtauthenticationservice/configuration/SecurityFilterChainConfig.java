@@ -32,7 +32,7 @@ public class SecurityFilterChainConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
 
         //Http Request Filter
-        httpSecurity.authorizeHttpRequests(requestMatcher-> requestMatcher.requestMatchers("/api/auth/login/**").permitAll()
+        httpSecurity.authorizeHttpRequests(requestMatcher -> requestMatcher.requestMatchers("/api/auth/login/**").permitAll()
                 .requestMatchers("/api/auth/sign-up/**").permitAll()
                 .requestMatchers("/api/auth/verify-token/**").permitAll()
                 .anyRequest().authenticated()
@@ -53,15 +53,15 @@ public class SecurityFilterChainConfig {
         return httpSecurity.build();
     }
 
-    private static CorsConfigurationSource getConfigurationSource(){
+    private static CorsConfigurationSource getConfigurationSource() {
         var corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedMethods(List.of("*"));
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000/", "http://localhost:5173/",  "http://localhost:8080"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000/", "http://localhost:5173/", "http://localhost:8080"));
         corsConfiguration.setAllowedHeaders(List.of("Content-Type"));
 
         var source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
 
-        return  source;
+        return source;
     }
 }

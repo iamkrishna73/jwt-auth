@@ -16,13 +16,15 @@ public class AuthenticationConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
     public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-       var authenticationProvider = new DaoAuthenticationProvider();
+        var authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder);
         return authenticationProvider;
     }
+
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
